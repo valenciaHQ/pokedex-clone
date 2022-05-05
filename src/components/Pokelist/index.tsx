@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
 import { useQuery } from "react-query";
 import {
+  Box,
   Button,
   Container,
-  Divider,
   Flex,
   SimpleGrid,
   Spinner,
@@ -12,6 +12,7 @@ import {
 
 import PokeCard from "../PokeCard";
 import { AllPokemonsResponse, PokecardProps } from "../../types";
+import CenteredWrapper from "../CenteredWrapper";
 
 const DEFAULT_OFFSET = 20;
 const Pokelist: FC = () => {
@@ -27,13 +28,32 @@ const Pokelist: FC = () => {
     keepPreviousData: true,
   });
 
-  if (isLoading || isFetching) return <Spinner />;
+  if (isLoading || isFetching)
+    return (
+      <CenteredWrapper>
+        <Spinner />
+      </CenteredWrapper>
+    );
 
-  if (error) return <p>"An error has occurred: " + error.message</p>;
+  if (error)
+    return (
+      <CenteredWrapper>
+        <Box>Ups! Something bad ocurred, please try again later...</Box>
+        <Button
+          variant="solid"
+          marginTop={5}
+          backgroundColor="red.200"
+          borderRadius="md"
+          border={"1px"}
+          onClick={() => window.location.reload()}
+        >
+          Refresh
+        </Button>
+      </CenteredWrapper>
+    );
 
   return (
     <Container maxW="container.xl">
-      <Divider></Divider>
       <SimpleGrid columns={{ sm: 2, md: 3, lg: 4 }} spacing={10}>
         {data?.results.map(({ name, url }: PokecardProps) => (
           <PokeCard key={url} name={name} url={url} />

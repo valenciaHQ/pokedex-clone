@@ -53,7 +53,22 @@ const Pokecard: FC<PokecardProps> = ({ name, url }): JSX.Element => {
       </GridItem>
     );
 
-  if (error) return <p>"An error has occurred: " + error.message</p>;
+  if (error)
+    return (
+      <GridItem
+        height="150px"
+        width="150px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        backgroundColor="red.100"
+        border={"1px"}
+      >
+        <Box
+          textAlign={"center"}
+        >{`Ups! an error ocurred fetching ${name} data :(`}</Box>
+      </GridItem>
+    );
 
   const pokemon = data as PokemonProps;
 
