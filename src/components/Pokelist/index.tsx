@@ -31,7 +31,7 @@ const Pokelist: FC = () => {
   if (isLoading || isFetching)
     return (
       <CenteredWrapper>
-        <Spinner />
+        <Spinner data-testid="loading-spinner" />
       </CenteredWrapper>
     );
 

@@ -4,6 +4,7 @@ import Pokelist from "./components/Pokelist";
 import PokeDetail from "./components/PokeDetail";
 import { ListContextProps, NewContextProps, PokemonProps } from "./types";
 import AddPokemon from "./components/AddPokemon";
+import { Container, Heading } from "@chakra-ui/react";
 
 export const ListContext = createContext<ListContextProps | null>(null);
 export const AddPokemonContext = createContext<NewContextProps | null>(null);
@@ -19,9 +20,14 @@ function App() {
       <AddPokemonContext.Provider
         value={{ addNewModal: addNewPokemonModal, setAddNew: setAddNewPokemon }}
       >
-        <Pokelist />
-        {detailOpen && <PokeDetail open />}
-        {addNewPokemonModal && <AddPokemon open />}
+        <Container maxW="container.xl">
+          <Heading as="h1" textAlign="center" paddingBottom={5} paddingTop={5}>
+            Welcome to Pokedex
+          </Heading>
+          <Pokelist />
+          {detailOpen && <PokeDetail open />}
+          {addNewPokemonModal && <AddPokemon open />}
+        </Container>
       </AddPokemonContext.Provider>
     </ListContext.Provider>
   );

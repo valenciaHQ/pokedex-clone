@@ -45,7 +45,7 @@ const Pokecard: FC<PokecardProps> = ({ name, url }): JSX.Element => {
 
   if (isLoading)
     return (
-      <GridItem height="150px" width="150px">
+      <GridItem height="150px" width="150px" data-testid="loading-skeleton">
         <Stack>
           <SkeletonCircle size="10" />
           <SkeletonText mt="4" noOfLines={4} spacing="4" />
@@ -79,6 +79,7 @@ const Pokecard: FC<PokecardProps> = ({ name, url }): JSX.Element => {
       borderRadius="md"
       padding="3"
       backgroundColor={getBackgroundColor(pokemon.types[0].type.name)}
+      data-testid="pokemon-card"
     >
       <Flex flex="1" flexFlow="row" justifyContent="space-around">
         <Flex flexFlow="column" alignItems="center">
