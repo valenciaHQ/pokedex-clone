@@ -13,3 +13,8 @@
 - Better Unit Testing with RTL and integration with Cypress
 - Better UI - Improve data showed
 - Better Responsiveness
+
+#Run it!
+
+- Just `yarn && yarn start`
+- `yarn test` for run test
