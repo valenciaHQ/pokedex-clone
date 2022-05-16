@@ -14,13 +14,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { memo, useContext } from "react";
-import { AddPokemonContext, ListContext } from "../../App";
+import { ListContext } from "../../App";
 import { ListContextProps, PokemonProps } from "../../types";
 
 const PokeDetail = ({ open }: { open: boolean }) => {
   const { isOpen } = useDisclosure({ isOpen: open });
   const context = useContext<ListContextProps | null>(ListContext);
-  const addContext = useContext(AddPokemonContext);
 
   const handleClose = () => context?.setSelectedPokemon(null);
 
@@ -36,8 +35,8 @@ const PokeDetail = ({ open }: { open: boolean }) => {
           <Stack display="flex" flexFlow="column" alignItems="center">
             <Image src={sprites.front_default} alt={name} h={200} width={200} />
             <Flex>
-              {abilities.map((entry) => (
-                <Badge>{entry.ability.name}</Badge>
+              {abilities.map((entry, i) => (
+                <Badge key={i}>{entry.ability.name}</Badge>
               ))}
             </Flex>
             <Flex>
@@ -56,16 +55,6 @@ const PokeDetail = ({ open }: { open: boolean }) => {
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Button
-            colorScheme="blue"
-            mr={3}
-            onClick={() => {
-              addContext?.setAddNew(true);
-              handleClose();
-            }}
-          >
-            Add Pokemon
-          </Button>
           <Button colorScheme="red" mr={3} onClick={handleClose}>
             Close
           </Button>

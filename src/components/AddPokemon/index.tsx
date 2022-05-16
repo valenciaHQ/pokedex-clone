@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import {
   Button,
@@ -15,17 +15,20 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { PokemonToAdd } from "../../types";
-import { AddPokemonContext } from "../../App";
 
-const AddPokemon = ({ open }: { open: boolean }) => {
+const AddPokemon = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) => {
   const { isOpen } = useDisclosure({ isOpen: open });
   const [pokemon, setPokemon] = useState<PokemonToAdd>({
     name: "New pokemon! ",
     weight: 1,
   });
-  const addContext = useContext(AddPokemonContext);
   const toast = useToast();
-  const handleClose = () => addContext?.setAddNew(false);
   const handeAddPokemon = () => {
     toast({
       title: "Pokemon has been created.",
@@ -34,10 +37,10 @@ const AddPokemon = ({ open }: { open: boolean }) => {
       duration: 9000,
       isClosable: true,
     });
-    handleClose();
+    onClose();
   };
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add Pokemon</ModalHeader>
@@ -72,7 +75,7 @@ const AddPokemon = ({ open }: { open: boolean }) => {
           <Button colorScheme="blue" mr={3} onClick={handeAddPokemon}>
             Add Pokemon
           </Button>
-          <Button colorScheme="red" mr={3} onClick={handleClose}>
+          <Button colorScheme="red" mr={3} onClick={onClose}>
             Close
           </Button>
         </ModalFooter>
