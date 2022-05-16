@@ -1,5 +1,4 @@
 import { FC, useState } from "react";
-import { useQuery } from "react-query";
 import {
   Box,
   Button,
@@ -11,22 +10,27 @@ import {
 } from "@chakra-ui/react";
 
 import PokeCard from "../PokeCard";
-import { AllPokemonsResponse, PokecardProps } from "../../types";
+import { PokecardProps } from "../../types";
 import CenteredWrapper from "../CenteredWrapper";
+import useFetchPokemons from "../../hooks/useFetchPokemons";
 
 const DEFAULT_OFFSET = 20;
 const Pokelist: FC = () => {
   const [offset, setOffset] = useState<number>(0);
-  const fetchProjects = (offset = 0) =>
-    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${offset}`).then(
-      (res) => res.json()
-    );
-  const { isLoading, error, data, isFetching } = useQuery<
-    AllPokemonsResponse,
-    Error
-  >(["allPokemons", offset], () => fetchProjects(offset), {
-    keepPreviousData: true,
-  });
+  const [currentPage, setCurrentPage] = useState<number>(0);
+
+  const { isLoading, error, data, isFetching, isPreviousData } =
+    useFetchPokemons(offset);
+
+  const handlePreviousPage = () => {
+    setCurrentPage((old) => old - 1);
+    setOffset((old) => old - DEFAULT_OFFSET);
+  };
+
+  const handleNextpage = () => {
+    setCurrentPage((old) => old + 1);
+    setOffset((old) => old + DEFAULT_OFFSET);
+  };
 
   if (isLoading || isFetching)
     return (
@@ -66,19 +70,18 @@ const Pokelist: FC = () => {
         marginTop={5}
         marginBottom={5}
       >
-        <Text>Current Page: {Math.floor(offset / 20)}</Text>
+        <Text>Current Page: {currentPage}</Text>
         <Button
           marginLeft={10}
           marginRight={10}
-          onClick={() => setOffset((old) => Math.max(old - 1, 0))}
-          disabled={Math.floor(offset / 20) === 0}
+          onClick={handlePreviousPage}
+          disabled={currentPage === 0}
         >
           Previous Page
         </Button>
         <Button
-          onClick={() => {
-            setOffset((old) => old + DEFAULT_OFFSET);
-          }}
+          onClick={handleNextpage}
+          disabled={isFetching || isPreviousData}
         >
           Next Page
         </Button>
